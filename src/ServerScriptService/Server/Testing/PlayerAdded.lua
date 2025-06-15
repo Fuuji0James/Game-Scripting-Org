@@ -2,7 +2,7 @@
 -- Status: Proto
 
 local Players = game:GetService("Players")
-local Tags = require(game:GetService('ReplicatedFirst').Packs.BasicPackages_Shared.Helpers.TagList)
+local Tags = require(game:GetService("ReplicatedFirst")._Shared.TagList)
 
 local function onCharacterAdded(Chr)
 	local player = Players:GetPlayerFromCharacter(Chr)
@@ -14,19 +14,18 @@ local function onCharacterAdded(Chr)
 	Chr:AddTag(Tags.PlayerTag)
 	Chr:AddTag(Tags.Components.Movement)
 	--Chr:AddTag(Tags.Components.Template)
-	
+
 	Chr:SetAttribute("UserId", player.UserId)
-	
+
 	Chr:FindFirstChildOfClass("Humanoid").Died:Once(function()
 		for index, componentTag in Chr:GetTags() do
 			for _, comparisonTag in Tags.Components do
-				
 				if componentTag == componentTag then
 					Chr:RemoveTag(componentTag)
 				end
-			end			
+			end
 		end
-	end)	
+	end)
 end
 
 local function OnPlayerAdded(Player: Player)
