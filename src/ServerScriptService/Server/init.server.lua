@@ -2,8 +2,8 @@
 -- Status: Proto
 
 -- Requires
-local SharedBasicPackages = game:GetService('ReplicatedFirst').Packs.BasicPackages_Shared
-local ServerBasicPackages = game:GetService('ServerScriptService').Packs.BasicPackages_Server
+local SharedBasicPackages = game:GetService("ReplicatedFirst").Packs.BasicPackages_Shared
+local ServerBasicPackages = game:GetService("ServerScriptService").Packs.BasicPackages_Server
 local DebugFolder = SharedBasicPackages.Debugging -- dependent on the one in 'basic packages'
 
 local ComponentHandler = require(ServerBasicPackages.ComponentHandler)
@@ -22,7 +22,7 @@ for _, Service in ServerBasicPackages.Services:GetDescendants() do
 		if Service:IsA("ModuleScript") then
 			local Ms = require(Service)
 
-			if typeof(Ms) == 'table' then
+			if typeof(Ms) == "table" then
 				if Ms.Init then
 					Ms:Init()
 				end
@@ -32,7 +32,6 @@ for _, Service in ServerBasicPackages.Services:GetDescendants() do
 end
 
 ComponentHandler.AddComponentToGame(ComponentsToLoad)
-
 
 -- debugging (studio only)
 

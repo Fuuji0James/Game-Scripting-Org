@@ -6,12 +6,15 @@ local Players = game:GetService("Players")
 local _ClientFolder = RF._Client
 local _SharedFolder = RF._Shared
 
-local ClientControllersFolder = RF.Controllers
-local ClientReceiversFolder = RF.Receivers
+local Libraries = RS.Libraries
+local Packages = RS.Packages
 
-local FindValueInTable = require(_ClientFolder.Helpers.FindValueInTable)
-local Tags = require(_ClientFolder.Helpers.Tags)
-local TimeNow = require(_ClientFolder.Helpers.CurrentTime)
+local ClientControllersFolder = _ClientFolder.Controllers
+local ClientReceiversFolder = _ClientFolder.Receivers
+
+local FindValueInTable = require(Packages.FindValueInTable)
+local TagList = require(_SharedFolder.TagList)
+local TimeNow = require(Libraries["Debugging Tools"].Helpers.CurrentTime)
 
 local CachedControllerModules = {} -- Exists for ones they've used before, and may use again
 local RunningControllers = {}
@@ -31,8 +34,9 @@ local function addToCachedControllerModules(ComponentName: string): ModuleScript
 
 	return RequiredControllerModule
 end
+
 local function instanceAddedToComponent(Component: string)
-	local ComponentName: string = FindValueInTable(Tags.Components, Component, true)
+	local ComponentName: string = FindValueInTable(TagList.Components, Component, true)
 	if RunningControllers[ComponentName] then
 		return
 	end
@@ -50,8 +54,9 @@ local function instanceAddedToComponent(Component: string)
 
 	RunningControllers[ComponentName] = Controller
 end
+
 local function instanceRemovedFromComponent(Component: string)
-	local ComponentName: string = FindValueInTable(Tags.Components, Component, true)
+	local ComponentName: string = FindValueInTable(TagList.Components, Component, true)
 	if not RunningControllers[ComponentName] then
 		return
 	end
@@ -66,6 +71,7 @@ local function instanceRemovedFromComponent(Component: string)
 
 	RunningControllers[ComponentName] = nil
 end
+
 local function SetupRecievers()
 	for _, Receiver in ClientReceiversFolder:GetDescendants() do
 		coroutine.wrap(function()
@@ -127,10 +133,10 @@ function Init(Character: Model)
 	SetupRecievers()
 
 	-- Upon Starting
-	for _, Component in Character:GetTags() do
-		if FindValueInTable(Character:GetTags(), Component) then
+	for _, Component in Character:GetTagList() do
+		if FindValueInTable(Character:GetTagList(), Component) then
 			-- check if we have a controller for it
-			local ComponentName: string = FindValueInTable(Tags.Components, Component, true)
+			local ComponentName: string = FindValueInTable(TagList.Components, Component, true)
 
 			if ClientControllersFolder:FindFirstChild(`Client_{ComponentName}`) then
 				addToCachedControllerModules(ComponentName)
@@ -151,7 +157,7 @@ function Init(Character: Model)
 	end
 
 	-- Added during runtime
-	for _, Component in Tags.Components do
+	for _, Component in TagList.Components do
 		CS:GetInstanceAddedSignal(Component):Connect(function()
 			instanceAddedToComponent(Component)
 		end)
@@ -159,8 +165,6 @@ function Init(Character: Model)
 			instanceRemovedFromComponent(Component)
 		end)
 	end
-
-	script:SetAttribute("Loaded", true) -- Making the controllers know we're started
 end
 
 local Character = Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait()

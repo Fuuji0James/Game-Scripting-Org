@@ -14,6 +14,8 @@ function module:SetupTestConfig()
 	DefaultConfig['Adapters'].PingProvider = function ()
 		return game.Players.LocalPlayer:GetNetworkPing()
 	end
+
+	return DefaultConfig
 end
 
 function module:StartTest(parentReceiver : ModuleScript)
