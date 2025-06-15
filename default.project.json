@@ -6,7 +6,11 @@
     "ReplicatedFirst": {
       "$className": "ReplicatedFirst",
       "$ignoreUnknownInstances": true,
-      "$path": "src/ReplicatedFirst"
+      "$path": "src/ReplicatedFirst",
+
+      "Packages": {
+          "$path": "Packages"
+      }
     },
     "StarterPlayer": {
       "$className": "StarterPlayer",
