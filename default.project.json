@@ -7,7 +7,6 @@
       "$className": "ReplicatedFirst",
       "$ignoreUnknownInstances": true,
       "$path": "src/ReplicatedFirst"
-
     },
     "StarterPlayer": {
       "$className": "StarterPlayer",
@@ -29,7 +28,6 @@
       "$className": "ReplicatedStorage",
       "$ignoreUnknownInstances": true,
       "$path": "src/ReplicatedStorage",
-      
       "Packages": {
           "$path": "Packages"
       }
